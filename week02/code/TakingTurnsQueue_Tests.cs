@@ -117,6 +117,9 @@ public class TakingTurnsQueueTests
     // Run 10 times.
     // Expected Result: Tim, Sue, Tim, Sue, Tim, Sue, Tim, Tim, Tim, Tim
     // Defect(s) Found: 
+    // - A person with negative turns was treated as  having negative turns instead of infinite turns.
+    // - The turns parameter was  modified instead of being left unchanged.
+    // - People with infinite turns were not always re-enqueued.
     public void TestTakingTurnsQueue_ForeverNegative()
     {
         var timTurns = -3;
