@@ -25,42 +25,73 @@ public class Maze
         _mazeMap = mazeMap;
     }
 
-    // TODO Problem 4 - ADD YOUR CODE HERE
+    // Problem 4 - ADD YOUR CODE HERE
     /// <summary>
     /// Check to see if you can move left.  If you can, then move.  If you
     /// can't move, throw an InvalidOperationException with the message "Can't go that way!".
     /// </summary>
-    public void MoveLeft()
+       public void MoveLeft()
     {
-        // FILL IN CODE
+        var current = _mazeMap[(_currX, _currY)];
+        if (current[0]) // left is index 0
+        {
+            _currX--;
+        }
+        else
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
     }
 
     /// <summary>
     /// Check to see if you can move right.  If you can, then move.  If you
     /// can't move, throw an InvalidOperationException with the message "Can't go that way!".
     /// </summary>
-    public void MoveRight()
+       public void MoveRight()
     {
-        // FILL IN CODE
+        var current = _mazeMap[(_currX, _currY)];
+        if (current[1]) // right is index 1
+        {
+            _currX++;
+        }
+        else
+        {
+            throw new InvalidOperationException("Can't go that way!");
+        }
     }
 
     /// <summary>
     /// Check to see if you can move up.  If you can, then move.  If you
     /// can't move, throw an InvalidOperationException with the message "Can't go that way!".
     /// </summary>
-    public void MoveUp()
+      public void MoveUp()
+{
+    var current = _mazeMap[(_currX, _currY)];
+    if (current[2]) // up is index 2
     {
-        // FILL IN CODE
+        _currY--;
     }
-
+    else
+    {
+        throw new InvalidOperationException("Can't go that way!");
+    }
+}
     /// <summary>
     /// Check to see if you can move down.  If you can, then move.  If you
     /// can't move, throw an InvalidOperationException with the message "Can't go that way!".
     /// </summary>
-    public void MoveDown()
+      public void MoveDown()
+{
+    var current = _mazeMap[(_currX, _currY)];
+    if (current[3]) // down is index 3
     {
-        // FILL IN CODE
+        _currY++;
     }
+    else
+    {
+        throw new InvalidOperationException("Can't go that way!");
+    }
+}
 
     public string GetStatus()
     {
