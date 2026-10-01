@@ -15,7 +15,12 @@ public static class Recursion
     public static int SumSquaresRecursive(int n)
     {
         // TODO Start Problem 1
+           // Base case: if n <= 0, there is nothing left to add
+    if (n <= 0)
         return 0;
+
+    // Recursive case: n^2 plus the sum of squares from 1 to n-1
+    return n * n + SumSquaresRecursive(n - 1);
     }
 
     /// <summary>
@@ -40,6 +45,21 @@ public static class Recursion
     public static void PermutationsChoose(List<string> results, string letters, int size, string word = "")
     {
         // TODO Start Problem 2
+         // Base case: we've built a word of the required length
+    if (word.Length == size)
+    {
+        results.Add(word);
+        return;
+    }
+
+    // Recursive case: try each letter not already in the word
+    for (int i = 0; i < letters.Length; i++)
+    {
+        char c = letters[i];
+        // Remove the chosen letter from the remaining pool
+        string remaining = letters.Remove(i, 1);
+        PermutationsChoose(results, remaining, size, word + c);
+    }
     }
 
     /// <summary>
@@ -86,6 +106,12 @@ public static class Recursion
     /// </summary>
     public static decimal CountWaysToClimb(int s, Dictionary<int, decimal>? remember = null)
     {
+
+        // Initialize the memo dictionary on the first call
+        if (remember == null)
+        {
+            remember = new Dictionary<int, decimal>();
+        }
         // Base Cases
         if (s == 0)
             return 0;
@@ -97,9 +123,17 @@ public static class Recursion
             return 4;
 
         // TODO Start Problem 3
+        // check the memo before doing any work
+        if (remember.ContainsKey(s))
+        {
+            return remember[s];
+        }
+        // Solve using recursion, passing 'remember' down
+        decimal ways = CountWaysToClimb(s - 1, remember)
+         + CountWaysToClimb(s - 2, remember) + CountWaysToClimb(s - 3, remember);
 
-        // Solve using recursion
-        decimal ways = CountWaysToClimb(s - 1) + CountWaysToClimb(s - 2) + CountWaysToClimb(s - 3);
+         //cache the results for future calls 
+        remember[s] = ways;
         return ways;
     }
 
@@ -119,6 +153,17 @@ public static class Recursion
     public static void WildcardBinary(string pattern, List<string> results)
     {
         // TODO Start Problem 4
+        // Base case: no more wildcards, this is a complete binary string
+    int index = pattern.IndexOf('*');
+    if (index == -1)
+    {
+        results.Add(pattern);
+        return;
+    }
+
+    // Recursive case: replace the first '*' with '0' and with '1'
+    WildcardBinary(pattern[..index] + "0" + pattern[(index + 1)..], results);
+    WildcardBinary(pattern[..index] + "1" + pattern[(index + 1)..], results);
     }
 
     /// <summary>
@@ -136,8 +181,34 @@ public static class Recursion
         // currPath.Add((1,2)); // Use this syntax to add to the current path
 
         // TODO Start Problem 5
-        // ADD CODE HERE
+        
 
-        // results.Add(currPath.AsString()); // Use this to add your path to the results array keeping track of complete maze solutions when you find the solution.
+    // Add the current position to the path
+    currPath.Add((x, y));
+
+    // Base case: we reached the end — record this path
+    if (maze.IsEnd(x, y))
+    {
+        results.Add(currPath.AsString());
     }
+    else
+    {
+        // Try all four directions from (x, y)
+        // Up
+        if (maze.IsValidMove(currPath, x, y - 1))
+            SolveMaze(results, maze, x, y - 1, currPath);
+        // Down
+        if (maze.IsValidMove(currPath, x, y + 1))
+            SolveMaze(results, maze, x, y + 1, currPath);
+        // Left
+        if (maze.IsValidMove(currPath, x - 1, y))
+            SolveMaze(results, maze, x - 1, y, currPath);
+        // Right
+        if (maze.IsValidMove(currPath, x + 1, y))
+            SolveMaze(results, maze, x + 1, y, currPath);
+    }
+
+    // Backtrack: remove the current position so other branches can use currPath
+    currPath.RemoveAt(currPath.Count - 1);
+}
 }
